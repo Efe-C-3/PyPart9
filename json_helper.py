@@ -2,6 +2,10 @@ import json
 import os
 import pickle
 
+""" Define a function called read_json. Given a string representing a 
+    file path to a json file, this function should open said file 
+    and convert its contens into a json object. The json object should be returned."""
+
 
 def read_json(file_name_txt):
     with open(file_name_txt) as json_file:
@@ -12,33 +16,41 @@ def read_json(file_name_txt):
 
 # print(read_json('/Users/cantekinefe/dev/PyPart9/data/super_smash_bros/link.json'))
 
-def read_all_json_files(file_name_txt):
-    full_path = os.path.abspath(file_name_txt)
-    listed_directory = os.listdir(full_path)
+""" Define a function called read_all_json_files. Given a string representing a 
+    path to a directory, this function should read all of the json files 
+    and return a list containing all of the json objects."""
+
+
+def read_all_json_files(file_path):
+    listed_directory = os.listdir(file_path)
     json_as_list = []
-    for file in listed_directory:
-        json_file = full_path
-        file_read = read_json(json_file)
+    for file_name in listed_directory:
+        json_file_path = os.path.join(file_path, file_name)
+        file_read = read_json(json_file_path)
         json_as_list.append(file_read)
     return json_as_list
 
 
-# print(os.path.abspath('data/super_smash_bros/link.json'))
-# print(read_all_json_files('data/super_smash_bros/link.json'))
+# print(read_all_json_files('data/super_smash_bros'))
+
+""" Define a function called write_pickle. This function should take a file path 
+    and some data. Given these parameters, the function should write the contents 
+    of the json files to a file called super_smash_characters.pickle."""
 
 
-def write_pickle(file_name_txt, some_data):
-    json_as_list = read_all_json_files(file_name_txt)
-    with open('some_data.pickle', 'wb') as pickle_file:  # found in docs.python.org
-        pickle.dumps(json_as_list, pickle_file)  # takes an object as a parameter and returns a string representation
+def write_pickle(file_name_txt, data):
+    json_as_list = read_json(file_name_txt)
+    with open(data, 'wb') as pickle_file:
+        pickle.dumps(json_as_list, pickle_file)
 
 
-# print(write_pickle('link.json', 'super_smash_characters'))
+# write_pickle('/Users/cantekinefe/dev/PyPart9/data/super_smash_bros/link.json', 'super_smash_characters.pickle')
 
 
-def load_pickle(file_path):
-    with open('some_data.pickle', 'rb') as pickle_file:  # reads resulting pickled data
-        data = pickle.load(pickle_file)  # found in docs.python.org
+def load_pickle(pickle_file_path):
+    with open(pickle_file_path, 'rb') as pickle_file:  # reads resulting pickled data
+        data = pickle.load(pickle_file)
     return data
 
-# print(load_pickle(/Users/cantekinefe/dev/PyPart9/data))
+
+# print(load_pickle('/Users/cantekinefe/dev/PyPart9/super_smash_characters.pickle'))
